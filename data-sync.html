@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مزامنة بيانات الفارابي</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1B5FA8, #D4AF37);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #1B5FA8;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .sync-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+        .sync-section h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            background: #1B5FA8;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #0D3B6B;
+            transform: translateY(-2px);
+        }
+        .btn.danger {
+            background: #ef4444;
+        }
+        .btn.danger:hover {
+            background: #dc2626;
+        }
+        .file-input {
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 2px dashed #1B5FA8;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .status.success {
+            background: #10b981;
+            color: white;
+        }
+        .status.error {
+            background: #ef4444;
+            color: white;
+        }
+        .status.info {
+            background: #3b82f6;
+            color: white;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: monospace;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 مزامنة بيانات الفارابي</h1>
+        
+        <div class="sync-section">
+            <h3>📤 تصدير البيانات</h3>
+            <p>قم بتصدير جميع البيانات من الموقع لمزامنتها مع GitHub</p>
+            <button class="btn" onclick="exportData()">📥 تصدير البيانات</button>
+            <div id="export-status"></div>
+        </div>
+
+        <div class="sync-section">
+            <h3>📥 استيراد البيانات</h3>
+            <p>قم باستيراد البيانات من GitHub لتحديث الموقع</p>
+            <div class="file-input" onclick="document.getElementById('file-input').click()">
+                📁 اختر ملف البيانات
+                <input type="file" id="file-input" accept=".json" style="display: none;" onchange="importData(event)">
+            </div>
+            <div id="import-status"></div>
+        </div>
+
+        <div class="sync-section">
+            <h3>📋 عرض البيانات الحالية</h3>
+            <button class="btn" onclick="showCurrentData()">👀 عرض البيانات</button>
+            <button class="btn danger" onclick="clearData()">🗑️ مسح البيانات</button>
+            <div id="data-display" style="display: none;">
+                <textarea id="data-content" readonly></textarea>
+                <button class="btn" onclick="copyData()">📋 نسخ البيانات</button>
+            </div>
+        </div>
+
+        <div class="sync-section">
+            <h3>📖 التعليمات</h3>
+            <ol>
+                <li>لتحديث البيانات على GitHub: اضغط "تصدير البيانات"</li>
+                <li>حمل ملف JSON الذي تم تصديره إلى GitHub</li>
+                <li>لتحديث الموقع من GitHub: حمل ملف البيانات واضغط "استيراد البيانات"</li>
+                <li>يمكنك مشاركة ملف البيانات مع المسؤولين الآخرين</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function exportData() {
+            try {
+                const data = {
+                    teachers: JSON.parse(localStorage.getItem('teachers_list') || '[]'),
+                    news: JSON.parse(localStorage.getItem('news_items') || '[]'),
+                    gallery: JSON.parse(localStorage.getItem('gallery_items') || '[]'),
+                    announcements: JSON.parse(localStorage.getItem('announcements') || '[]'),
+                    registrations: JSON.parse(localStorage.getItem('registrations') || '[]'),
+                    top_students: JSON.parse(localStorage.getItem('top_students_data') || '{}'),
+                    regular_students: JSON.parse(localStorage.getItem('regular_students') || '[]'),
+                    last_updated: new Date().toISOString()
+                };
+
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `alfarabi-data-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus('export-status', 'تم تصدير البيانات بنجاح! قم برفع الملف إلى GitHub', 'success');
+            } catch (error) {
+                showStatus('export-status', 'حدث خطأ أثناء تصدير البيانات: ' + error.message, 'error');
+            }
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Update localStorage
+                    if (data.teachers) localStorage.setItem('teachers_list', JSON.stringify(data.teachers));
+                    if (data.news) localStorage.setItem('news_items', JSON.stringify(data.news));
+                    if (data.gallery) localStorage.setItem('gallery_items', JSON.stringify(data.gallery));
+                    if (data.announcements) localStorage.setItem('announcements', JSON.stringify(data.announcements));
+                    if (data.registrations) localStorage.setItem('registrations', JSON.stringify(data.registrations));
+                    if (data.top_students) localStorage.setItem('top_students_data', JSON.stringify(data.top_students));
+                    if (data.regular_students) localStorage.setItem('regular_students', JSON.stringify(data.regular_students));
+
+                    showStatus('import-status', 'تم استيراد البيانات بنجاح! قم بتحديث الموقع الرئيسي', 'success');
+                } catch (error) {
+                    showStatus('import-status', 'حدث خطأ أثناء استيراد البيانات: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function showCurrentData() {
+            try {
+                const data = {
+                    teachers: JSON.parse(localStorage.getItem('teachers_list') || '[]'),
+                    news: JSON.parse(localStorage.getItem('news_items') || '[]'),
+                    gallery: JSON.parse(localStorage.getItem('gallery_items') || '[]'),
+                    announcements: JSON.parse(localStorage.getItem('announcements') || '[]'),
+                    registrations: JSON.parse(localStorage.getItem('registrations') || '[]'),
+                    top_students: JSON.parse(localStorage.getItem('top_students_data') || '{}'),
+                    regular_students: JSON.parse(localStorage.getItem('regular_students') || '[]'),
+                    last_updated: new Date().toISOString()
+                };
+
+                document.getElementById('data-content').value = JSON.stringify(data, null, 2);
+                document.getElementById('data-display').style.display = 'block';
+            } catch (error) {
+                showStatus('export-status', 'حدث خطأ أثناء عرض البيانات: ' + error.message, 'error');
+            }
+        }
+
+        function copyData() {
+            const textarea = document.getElementById('data-content');
+            textarea.select();
+            document.execCommand('copy');
+            showStatus('export-status', 'تم نسخ البيانات إلى الحافظة', 'success');
+        }
+
+        function clearData() {
+            if (confirm('هل أنت متأكد من مسح جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
+                localStorage.clear();
+                showStatus('export-status', 'تم مسح جميع البيانات', 'info');
+                document.getElementById('data-display').style.display = 'none';
+            }
+        }
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
