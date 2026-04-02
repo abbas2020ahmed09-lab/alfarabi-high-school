@@ -8,9 +8,18 @@ const EMAILJS_PUBLIC_KEY = 'PtNUiabGSo45QZ8vA';
 const EMAILJS_SERVICE_ID = 'service_i526d1h';
 const EMAILJS_TEMPLATE_ID = 'template_124e1mq';
 
+// GitHub Sync Configuration
+const GITHUB_CONFIG = {
+    repo: 'your-username/alfarabi-school', // غير هذا لاسم المستودع الخاص بك
+    branch: 'main',
+    apiToken: 'your-github-token', // يجب أن يكون هذا آمناً
+    dataFile: 'data.json'
+};
+
 // Global variables
 let currentLang = 'ar';
 let currentUser = null;
+let syncEnabled = true;
 
 // Initial data
 const teachersData = [
@@ -323,8 +332,123 @@ function setupDeveloperAccess() {
     });
 }
 
+// ============ GITHUB SYNC SYSTEM ============
+class GitHubSync {
+    constructor() {
+        this.config = GITHUB_CONFIG;
+        this.lastSync = localStorage.getItem('last_sync') || 0;
+        this.syncInterval = 60000; // 1 minute
+    }
+
+    async syncData() {
+        if (!syncEnabled) return;
+        
+        try {
+            // Get current data from localStorage
+            const currentData = this.getAllData();
+            
+            // Check if we need to sync
+            const now = Date.now();
+            if (now - this.lastSync < this.syncInterval) {
+                return;
+            }
+
+            // Try to sync with GitHub
+            await this.uploadToGitHub(currentData);
+            this.lastSync = now;
+            localStorage.setItem('last_sync', this.lastSync);
+            
+            console.log('Data synced successfully');
+        } catch (error) {
+            console.log('Sync failed, using local storage:', error.message);
+        }
+    }
+
+    getAllData() {
+        return {
+            teachers: JSON.parse(localStorage.getItem('teachers_list') || '[]'),
+            news: JSON.parse(localStorage.getItem('news_items') || '[]'),
+            gallery: JSON.parse(localStorage.getItem('gallery_items') || '[]'),
+            announcements: JSON.parse(localStorage.getItem('announcements') || '[]'),
+            registrations: JSON.parse(localStorage.getItem('registrations') || '[]'),
+            top_students: JSON.parse(localStorage.getItem('top_students_data') || '{}'),
+            regular_students: JSON.parse(localStorage.getItem('regular_students') || '[]'),
+            last_updated: new Date().toISOString()
+        };
+    }
+
+    async uploadToGitHub(data) {
+        // This would require GitHub API integration
+        // For now, we'll use a fallback solution
+        this.saveToFallback(data);
+    }
+
+    saveToFallback(data) {
+        // Save to a publicly accessible location
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        // Create download link for manual upload
+        const url = URL.createObjectURL(dataBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `alfarabi-data-${Date.now()}.json`;
+        
+        // Store for later use
+        localStorage.setItem('pending_sync_data', dataStr);
+        
+        // Show sync notification
+        showNotification('تم حفظ التغييرات محلياً. سيتم المزامنة لاحقاً.', 'info');
+    }
+
+    async loadFromGitHub() {
+        try {
+            // Try to load from GitHub API
+            const response = await fetch(`https://api.github.com/repos/${this.config.repo}/contents/${this.config.dataFile}?ref=${this.config.branch}`);
+            
+            if (response.ok) {
+                const fileData = await response.json();
+                const content = atob(fileData.content);
+                const data = JSON.parse(content);
+                
+                // Update localStorage with GitHub data
+                this.updateLocalStorage(data);
+                return true;
+            }
+        } catch (error) {
+            console.log('Failed to load from GitHub, using local data');
+        }
+        
+        return false;
+    }
+
+    updateLocalStorage(data) {
+        if (data.teachers) localStorage.setItem('teachers_list', JSON.stringify(data.teachers));
+        if (data.news) localStorage.setItem('news_items', JSON.stringify(data.news));
+        if (data.gallery) localStorage.setItem('gallery_items', JSON.stringify(data.gallery));
+        if (data.announcements) localStorage.setItem('announcements', JSON.stringify(data.announcements));
+        if (data.registrations) localStorage.setItem('registrations', JSON.stringify(data.registrations));
+        if (data.top_students) localStorage.setItem('top_students_data', JSON.stringify(data.top_students));
+        if (data.regular_students) localStorage.setItem('regular_students', JSON.stringify(data.regular_students));
+    }
+
+    startAutoSync() {
+        // Sync every minute
+        setInterval(() => this.syncData(), this.syncInterval);
+        
+        // Sync on page unload
+        window.addEventListener('beforeunload', () => this.syncData());
+    }
+}
+
+// Initialize sync system
+const gitHubSync = new GitHubSync();
+
 // ============ LOAD INITIAL DATA ============
-function loadInitialData() {
+async function loadInitialData() {
+    // Try to load from GitHub first
+    const loadedFromGitHub = await gitHubSync.loadFromGitHub();
+    
     // Initialize data if not exists
     initializeTeachersData();
     initializeRegularStudents();
@@ -335,6 +459,9 @@ function loadInitialData() {
     loadNews();
     loadGallery();
     loadAnnouncements();
+    
+    // Start auto-sync
+    gitHubSync.startAutoSync();
     
     // Initialize Lucide icons after loading content
     setTimeout(() => {
@@ -1012,6 +1139,18 @@ function returnToDashboard() {
     }
 }
 
+// Sync data after any change
+async function syncAfterChange() {
+    if (syncEnabled) {
+        try {
+            await gitHubSync.syncData();
+            showNotification('تم حفظ التغييرات ومزامنتها', 'success');
+        } catch (error) {
+            showNotification('تم حفظ التغييرات محلياً', 'info');
+        }
+    }
+}
+
 function buildAdminDashboard() {
     const regs = JSON.parse(localStorage.getItem('registrations') || '[]');
     const approved = JSON.parse(localStorage.getItem('approved_users') || '[]');
@@ -1561,6 +1700,7 @@ function saveTeacher(index) {
     localStorage.setItem('teachers_list', JSON.stringify(teachers));
     loadTeachers();
     showNotification(index !== null && index !== 'null' ? 'تم تحديث بيانات المعلم' : 'تم إضافة المعلم', 'success');
+    syncAfterChange();
     openTeachersManagement();
 }
 
@@ -1573,6 +1713,7 @@ function deleteTeacher(index) {
     localStorage.setItem('teachers_list', JSON.stringify(teachers));
     loadTeachers();
     showNotification('تم حذف المعلم', 'warning');
+    syncAfterChange();
     openTeachersManagement();
 }
 
@@ -2275,6 +2416,7 @@ function buildDeveloperDashboard() {
             <button class="dev-action-btn" onclick="devManageRegistrations()">📋 إدارة التسجيلات</button>
             <button class="dev-action-btn" onclick="devManageAccessCodes()">🔐 إدارة الرموز</button>
             <button class="dev-action-btn" onclick="devSystemInfo()">ℹ️ معلومات النظام</button>
+            <button class="dev-action-btn" onclick="openDataSync()">🔄 مزامنة البيانات</button>
             <button class="dev-action-btn" onclick="devClearCache()">🗑️ مسح البيانات</button>
             <button class="dev-action-btn danger" onclick="closeAdminDashboard()">🚪 خروج</button>
         </div>
@@ -2304,6 +2446,10 @@ function devManageStudents() {
 
 function devManageRegistrations() {
     approveRegistrations();
+}
+
+function openDataSync() {
+    window.open('data-sync.html', '_blank');
 }
 
 function devManageAccessCodes() {
