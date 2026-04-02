@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثانوية الفارابي للمتفوقين | Al-Farabi High School</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body data-theme="light">
+
+    <!-- LOADING SCREEN -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader"></div>
+        <h2 class="loader-text">AL-FARABI</h2>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <div class="logo-circle">
+                    <img src="logo.png" alt="Al-Farabi Logo" class="logo-image">
+                </div>
+                <span class="school-name" data-ar="ثانوية الفارابي" data-en="Al-Farabi School">ثانوية الفارابي</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link" data-ar="الرئيسية" data-en="Home">الرئيسية</a></li>
+                <li><a href="#top-students" class="nav-link" data-ar="المتفوقين" data-en="Top Students">المتفوقين</a></li>
+                <li><a href="#students" class="nav-link" data-ar="الطلاب" data-en="Students">الطلاب</a></li>
+                <li><a href="#teachers" class="nav-link" data-ar="المعلمون" data-en="Teachers">المعلمون</a></li>
+                <li><a href="#news" class="nav-link" data-ar="الأخبار" data-en="News">الأخبار</a></li>
+                <li><a href="#announcements" class="nav-link" data-ar="الإعلانات" data-en="Announcements">الإعلانات</a></li>
+                <li><a href="#gallery" class="nav-link" data-ar="المعرض" data-en="Gallery">المعرض</a></li>
+                <li><a href="#contact" class="nav-link" data-ar="تواصل" data-en="Contact">تواصل</a></li>
+                <li><a href="#" class="nav-link login-link" onclick="openUserLogin()" data-ar="تسجيل الدخول" data-en="Login">تسجيل الدخول</a></li>
+                <li><a href="#" class="nav-link manager-link" onclick="openManagerLogin()" data-ar="إدارة الموقع" data-en="Manager Web">إدارة الموقع</a></li>
+            </ul>
+
+            <div class="nav-buttons">
+                <button id="theme-toggle" class="theme-btn" title="Toggle Theme">
+                    <i data-lucide="sun"></i>
+                </button>
+                <button id="lang-toggle" class="lang-btn">
+                    <i data-lucide="globe"></i>
+                    <span>English</span>
+                </button>
+            </div>
+
+            <!-- Hamburger Menu for Mobile -->
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge" data-ar="🏆 بنين فقط" data-en="🏆 Boys Only">🏆 بنين فقط</div>
+            <h1 class="main-title" data-ar="ثانوية الفارابي للمتفوقين" data-en="Al-Farabi High School for Distinguished Students">ثانوية الفارابي للمتفوقين</h1>
+            <p class="subtitle" data-ar="صرح علمي راسخ في بناء قادة المستقبل" data-en="Building tomorrow's leaders through educational excellence">صرح علمي راسخ في بناء قادة المستقبل</p>
+            <div class="hero-features">
+                <div class="feature-item"><i data-lucide="award"></i> <span data-ar="تعليم متميز" data-en="Distinguished Education">تعليم متميز</span></div>
+                <div class="feature-item"><i data-lucide="users"></i> <span data-ar="كادر ممتاز" data-en="Excellent Faculty">كادر ممتاز</span></div>
+                <div class="feature-item"><i data-lucide="zap"></i> <span data-ar="تطور مستمر" data-en="Continuous Growth">تطور مستمر</span></div>
+            </div>
+            <div class="hero-btns">
+                <a href="#registration" class="btn btn-primary" data-ar="سجل الآن" data-en="Register Now">سجل الآن</a>
+                <a href="#top-students" class="btn btn-secondary" data-ar="استكشف المتفوقين" data-en="Explore Top Students">استكشف المتفوقين</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP STUDENTS SECTION -->
+    <section id="top-students" class="top-students">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="🏆 لوحة الشرف" data-en="🏆 Top Students">🏆 لوحة الشرف</h2>
+                <p class="section-subtitle" data-ar="أفضل الطلاب المتفوقين في كل صف" data-en="Distinguished students in every grade">أفضل الطلاب المتفوقين في كل صف</p>
+            </div>
+
+            <div class="grade-tabs">
+                <button class="grade-tab active" onclick="filterGrade('1st')" data-ar="الأول المتوسط" data-en="1st Intermediate">الأول</button>
+                <button class="grade-tab" onclick="filterGrade('2nd')" data-ar="الثاني المتوسط" data-en="2nd Intermediate">الثاني</button>
+                <button class="grade-tab" onclick="filterGrade('3rd')" data-ar="الثالث المتوسط" data-en="3rd Intermediate">الثالث</button>
+                <button class="grade-tab" onclick="filterGrade('4th')" data-ar="الرابع الإعدادي" data-en="4th Preparatory">الرابع</button>
+                <button class="grade-tab" onclick="filterGrade('5th')" data-ar="الخامس الإعدادي" data-en="5th Preparatory">الخامس</button>
+                <button class="grade-tab" onclick="filterGrade('6th')" data-ar="السادس الإعدادي" data-en="6th Preparatory">السادس</button>
+            </div>
+
+            <div class="students-grid" id="top-students-container"></div>
+        </div>
+    </section>
+
+    <!-- STUDENTS SECTION -->
+    <section id="students" class="students-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="👨‍🎓 الطلاب" data-en="👨‍🎓 Students">👨‍🎓 الطلاب</h2>
+                <p class="section-subtitle" data-ar="اختر صفك لعرض جميع الطلاب" data-en="Select your grade to view all students">اختر صفك لعرض جميع الطلاب</p>
+            </div>
+
+            <div class="grade-tabs">
+                <button class="grade-tab active" onclick="viewStudentsByGrade('1st')" data-ar="الأول" data-en="1st">الأول</button>
+                <button class="grade-tab" onclick="viewStudentsByGrade('2nd')" data-ar="الثاني" data-en="2nd">الثاني</button>
+                <button class="grade-tab" onclick="viewStudentsByGrade('3rd')" data-ar="الثالث" data-en="3rd">الثالث</button>
+                <button class="grade-tab" onclick="viewStudentsByGrade('4th')" data-ar="الرابع" data-en="4th">الرابع</button>
+                <button class="grade-tab" onclick="viewStudentsByGrade('5th')" data-ar="الخامس" data-en="5th">الخامس</button>
+                <button class="grade-tab" onclick="viewStudentsByGrade('6th')" data-ar="السادس" data-en="6th">السادس</button>
+            </div>
+
+            <div class="students-grid" id="students-container"></div>
+        </div>
+    </section>
+
+    <!-- TEACHERS SECTION -->
+    <section id="teachers" class="teachers-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="👨‍🏫 المعلمون" data-en="👨‍🏫 Teachers">👨‍🏫 المعلمون</h2>
+                <p class="section-subtitle" data-ar="كادرنا التعليمي المتميز" data-en="Our distinguished teaching staff">كادرنا التعليمي المتميز</p>
+            </div>
+
+            <div class="teachers-grid" id="teachers-container"></div>
+        </div>
+    </section>
+
+    <!-- NEWS SECTION -->
+    <section id="news" class="news-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="📰 الأخبار" data-en="📰 News">📰 الأخبار</h2>
+                <p class="section-subtitle" data-ar="أحدث الأخبار المدرسية" data-en="Latest school news">أحدث الأخبار المدرسية</p>
+            </div>
+
+            <div class="news-grid" id="news-container"></div>
+        </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS SECTION -->
+    <section id="announcements" class="announcements-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="📢 الإعلانات" data-en="📢 Announcements">📢 الإعلانات</h2>
+                <p class="section-subtitle" data-ar="الإعلانات المدرسية الهامة" data-en="Important school announcements">الإعلانات المدرسية الهامة</p>
+            </div>
+
+            <div class="announcements-grid" id="announcements-container"></div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="🖼️ معرض الصور" data-en="🖼️ Photo Gallery">🖼️ معرض الصور</h2>
+                <p class="section-subtitle" data-ar="أنشطة وفعاليات المدرسة" data-en="School activities and events">أنشطة وفعاليات المدرسة</p>
+            </div>
+
+            <div class="gallery-grid" id="gallery-container"></div>
+        </div>
+    </section>
+
+    <!-- REGISTRATION SECTION -->
+    <section id="registration" class="registration">
+        <div class="container registration-container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="✍️ التسجيل" data-en="✍️ Registration">✍️ التسجيل</h2>
+                <p class="section-subtitle" data-ar="انضم إلى عائلة الفارابي" data-en="Join Al-Farabi Family">انضم إلى عائلة الفارابي</p>
+            </div>
+
+            <div class="reg-card">
+                <div class="reg-tabs">
+                    <button class="reg-tab active" onclick="switchRole('student')" data-ar="طالب جديد" data-en="New Student">طالب جديد</button>
+                    <button class="reg-tab" onclick="switchRole('teacher')" data-ar="معلم" data-en="Teacher">معلم</button>
+                    <button class="reg-tab" onclick="switchRole('admin')" data-ar="مسؤول" data-en="Administrator">مسؤول</button>
+                </div>
+
+                <form id="reg-form" class="reg-form" onsubmit="handleRegistration(event)">
+                    <h3 id="form-title" class="form-title">تسجيل طالب جديد</h3>
+
+                    <!-- Student Registration Form -->
+                    <div id="student-form" class="form-content active">
+                        <div class="input-group">
+                            <label data-ar="الاسم الكامل بالعربية" data-en="Full Name in Arabic">الاسم الكامل بالعربية</label>
+                            <input type="text" id="student-name-ar" placeholder="أحمد محمد علي" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="الاسم الكامل بالإنجليزية" data-en="Full Name in English">الاسم الكامل بالإنجليزية</label>
+                            <input type="text" id="student-name-en" placeholder="Ahmed Mohammed Ali" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                            <input type="email" id="student-email" placeholder="student@school.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
+                            <input type="tel" id="student-phone" placeholder="07812345678" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="الصف الدراسي" data-en="Grade">الصف الدراسي</label>
+                            <select id="student-grade" required>
+                                <option value="">اختر صفك</option>
+                                <option value="1st">الأول المتوسط</option>
+                                <option value="2nd">الثاني المتوسط</option>
+                                <option value="3rd">الثالث المتوسط</option>
+                                <option value="4th">الرابع الإعدادي</option>
+                                <option value="5th">الخامس الإعدادي</option>
+                                <option value="6th">السادس الإعدادي</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+                            <input type="password" id="student-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Registration Form -->
+                    <div id="teacher-form" class="form-content">
+                        <div class="input-group">
+                            <label data-ar="الاسم الكامل" data-en="Full Name">الاسم الكامل</label>
+                            <input type="text" id="teacher-name" placeholder="الدكتور أحمد" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                            <input type="email" id="teacher-email" placeholder="teacher@school.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
+                            <input type="tel" id="teacher-phone" placeholder="07812345678" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="المادة الدراسية" data-en="Subject">المادة الدراسية</label>
+                            <input type="text" id="teacher-subject" placeholder="الرياضيات" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="المؤهل العلمي" data-en="Qualification">المؤهل العلمي</label>
+                            <input type="text" id="teacher-qualification" placeholder="بكالوريوس" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+                            <input type="password" id="teacher-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <!-- Admin Registration Form -->
+                    <div id="admin-form" class="form-content">
+                        <div class="input-group">
+                            <label data-ar="اسم المسؤول" data-en="Admin Name">اسم المسؤول</label>
+                            <input type="text" id="admin-name" placeholder="المدير" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                            <input type="email" id="admin-email" placeholder="admin@school.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
+                            <input type="tel" id="admin-phone" placeholder="07812345678" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="المنصب" data-en="Position">المنصب</label>
+                            <input type="text" id="admin-position" placeholder="مدير المدرسة" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-ar="كلمة المرور الرئيسية (Admin Key)" data-en="Admin Master Password">كلمة المرور الرئيسية</label>
+                            <input type="password" id="admin-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary submit-btn" data-ar="إرسال الطلب" data-en="Submit Registration">إرسال الطلب</button>
+                    <p class="form-note" data-ar="سيتم التحقق من بيانات التسجيل قريباً" data-en="Registration will be verified soon">سيتم التحقق من بيانات التسجيل قريباً</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD MODAL -->
+    <div id="dashboard-modal" class="modal">
+        <div class="modal-content dashboard-modal">
+            <button class="modal-close" onclick="closeAdminDashboard()">&times;</button>
+            <div id="dashboard-content"></div>
+        </div>
+    </div>
+
+    <!-- STUDENT PROFILE MODAL -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content profile-modal">
+            <button class="modal-close" onclick="closeProfile()">&times;</button>
+            <div id="profile-content"></div>
+        </div>
+    </div>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-ar="📞 تواصل معنا" data-en="📞 Contact Us">📞 تواصل معنا</h2>
+                <p class="section-subtitle" data-ar="نحن هنا للإجابة على جميع استفساراتك" data-en="We're here to answer all your questions">نحن هنا للإجابة على جميع استفساراتك</p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <i data-lucide="map-pin"></i>
+                        <h3 data-ar="الموقع" data-en="Location">الموقع</h3>
+                        <p>بغداد - العراق</p>
+                    </div>
+                    <div class="info-card">
+                        <i data-lucide="phone"></i>
+                        <h3 data-ar="الهاتف" data-en="Phone">الهاتف</h3>
+                        <p>07912345678</p>
+                    </div>
+                    <div class="info-card">
+                        <i data-lucide="mail"></i>
+                        <h3 data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</h3>
+                        <p><a href="mailto:info@alfarabi.edu">info@alfarabi.edu</a></p>
+                    </div>
+                    <div class="info-card">
+                        <i data-lucide="clock"></i>
+                        <h3 data-ar="ساعات العمل" data-en="Working Hours">ساعات العمل</h3>
+                        <p data-ar="7:00 صباحاً - 2:00 مساءً" data-en="7:00 AM - 2:00 PM">7:00 صباحاً - 2:00 مساءً</p>
+                    </div>
+                </div>
+
+                <form class="contact-form" onsubmit="handleContact(event)">
+                    <div class="input-group">
+                        <label data-ar="الاسم" data-en="Name">الاسم</label>
+                        <input type="text" id="contact-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+                        <input type="email" id="contact-email" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-ar="الموضوع" data-en="Subject">الموضوع</label>
+                        <input type="text" id="contact-subject" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-ar="الرسالة" data-en="Message">الرسالة</label>
+                        <textarea id="contact-message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-ar="إرسال الرسالة" data-en="Send Message">إرسال الرسالة</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEVELOPER ACCESS MODAL (HIDDEN) -->
+    <div id="developer-modal" class="modal developer-modal">
+        <div class="modal-content developer-modal-content">
+            <button class="modal-close" onclick="closeDeveloperModal()">&times;</button>
+            <div class="developer-login">
+                <div class="developer-header">
+                    <h2 class="developer-title">🔐 Developer Access</h2>
+                    <p class="developer-subtitle">Authorized Personnel Only</p>
+                </div>
+                <form id="developer-login-form" class="developer-form" onsubmit="handleDeveloperLogin(event)">
+                    <div class="input-group">
+                        <label>Developer Key</label>
+                        <input type="password" id="developer-key" placeholder="Enter developer key" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Access Dashboard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 data-ar="ثانوية الفارابي للمتفوقين" data-en="Al-Farabi High School">ثانوية الفارابي للمتفوقين</h4>
+                <p data-ar="صرح علمي مميز مختص بتعليم الذكور فقط" data-en="Distinguished educational institution for boys only">صرح علمي مميز مختص بتعليم الذكور فقط</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-ar="الروابط السريعة" data-en="Quick Links">الروابط السريعة</h4>
+                <ul>
+                    <li><a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a></li>
+                    <li><a href="#top-students" data-ar="المتفوقين" data-en="Top Students">المتفوقين</a></li>
+                    <li><a href="#contact" data-ar="تواصل" data-en="Contact">تواصل</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-ar="تواصل اجتماعي" data-en="Social Media">تواصل اجتماعي</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/alfarabi.2017?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" title="Instagram" class="social-link instagram">
+                        <i data-lucide="instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-ar="© 2024 جميع الحقوق محفوظة لثانوية الفارابي للمتفوقين" data-en="© 2024 All rights reserved to Al-Farabi High School">&copy; 2024 جميع الحقوق محفوظة لثانوية الفارابي للمتفوقين</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8; font-size: 0.9rem;">
+                Developed by: <strong style="color: var(--accent);">Khattab Omar and
+                    Abbas Ahmed
+                </strong>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
