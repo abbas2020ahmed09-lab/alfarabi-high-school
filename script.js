@@ -316,20 +316,8 @@ function setupSmoothScroll() {
 }
 
 function setupDeveloperAccess() {
-    const devKey = 'DEV_MASTER_2024';
-    let devKeySequence = '';
-    
-    document.addEventListener('keydown', (e) => {
-        devKeySequence += e.key;
-        if (devKeySequence.length > devKey.length) {
-            devKeySequence = devKeySequence.substring(devKeySequence.length - devKey.length);
-        }
-        
-        if (devKeySequence === devKey) {
-            openDeveloperModal();
-            devKeySequence = '';
-        }
-    });
+    // Removed key-sequence shortcut access to keep developer access only via footer button (🔐).
+    // If needed in future, re-enable by implementing a controlled login handler.
 }
 
 // ============ GITHUB SYNC SYSTEM ============
@@ -2405,19 +2393,11 @@ function buildDeveloperDashboard() {
     <div class="dashboard developer-dashboard">
         <div class="dashboard-header">
             <h2 class="dashboard-title">👨‍💻 لوحة تحكم المطور</h2>
-            <p class="dashboard-subtitle">الوصول الكامل للنظام</p>
+            <p class="dashboard-subtitle">إدارة الطلاب والمعلمين</p>
         </div>
         <div class="dev-actions-grid">
             <button class="dev-action-btn" onclick="devManageTeachers()">👨‍🏫 إدارة المعلمين</button>
-            <button class="dev-action-btn" onclick="devManageNews()">📰 إدارة الأخبار</button>
-            <button class="dev-action-btn" onclick="devManageGallery()">🖼️ إدارة المعرض</button>
-            <button class="dev-action-btn" onclick="devManageAnnouncements()">📢 إدارة الإعلانات</button>
             <button class="dev-action-btn" onclick="devManageStudents()">👨‍🎓 إدارة الطلاب</button>
-            <button class="dev-action-btn" onclick="devManageRegistrations()">📋 إدارة التسجيلات</button>
-            <button class="dev-action-btn" onclick="devManageAccessCodes()">🔐 إدارة الرموز</button>
-            <button class="dev-action-btn" onclick="devSystemInfo()">ℹ️ معلومات النظام</button>
-            <button class="dev-action-btn" onclick="openDataSync()">🔄 مزامنة البيانات</button>
-            <button class="dev-action-btn" onclick="devClearCache()">🗑️ مسح البيانات</button>
             <button class="dev-action-btn danger" onclick="closeAdminDashboard()">🚪 خروج</button>
         </div>
     </div>`;
