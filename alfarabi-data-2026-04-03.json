@@ -1,0 +1,192 @@
+{
+  "teachers": [
+    {
+      "name": "الاستاذ عمر عبدالجبار",
+      "subject": "رياضيات",
+      "qualification": "مدرس مادة الرياضيات",
+      "experience": "17 سنة",
+      "email": "0",
+      "phone": "0",
+      "bio": "معلم متخصص",
+      "image": "https://imgur.com/a/tiGZryH"
+    }
+  ],
+  "news": [],
+  "gallery": [],
+  "announcements": [],
+  "registrations": [],
+  "top_students": {
+    "1st": [],
+    "2nd": [
+      {
+        "name": "محمد أحمد",
+        "grade": "الثاني المتوسط",
+        "rank": "2",
+        "average": 98.3,
+        "score": 491
+      },
+      {
+        "name": "عبدالله عمر",
+        "grade": "الثاني المتوسط",
+        "rank": "3",
+        "average": 97.5,
+        "score": 487
+      }
+    ],
+    "3rd": [
+      {
+        "name": "حسن محمود",
+        "grade": "الثالث المتوسط",
+        "rank": "1",
+        "average": 98.9,
+        "score": 494
+      },
+      {
+        "name": "ياسر خالد",
+        "grade": "الثالث المتوسط",
+        "rank": "2",
+        "average": 98.1,
+        "score": 490
+      },
+      {
+        "name": "سالم ناصر",
+        "grade": "الثالث المتوسط",
+        "rank": "3",
+        "average": 97.2,
+        "score": 486
+      }
+    ],
+    "4th": [
+      {
+        "name": "فارس أحمد",
+        "grade": "الرابع الإعدادي",
+        "rank": "1",
+        "average": 99.3,
+        "score": 496
+      },
+      {
+        "name": "رائد محمد",
+        "grade": "الرابع الإعدادي",
+        "rank": "2",
+        "average": 98.7,
+        "score": 493
+      },
+      {
+        "name": "نبيل علي",
+        "grade": "الرابع الإعدادي",
+        "rank": "3",
+        "average": 97.9,
+        "score": 489
+      }
+    ],
+    "5th": [
+      {
+        "name": "سالم حسن",
+        "grade": "الخامس الإعدادي",
+        "rank": "1",
+        "average": 99.5,
+        "score": 497
+      },
+      {
+        "name": "طارق خالد",
+        "grade": "الخامس الإعدادي",
+        "rank": "2",
+        "average": 98.8,
+        "score": 494
+      },
+      {
+        "name": "ماهر عمر",
+        "grade": "الخامس الإعدادي",
+        "rank": "3",
+        "average": 98.2,
+        "score": 491
+      }
+    ],
+    "6th": [
+      {
+        "name": "فهد محمد",
+        "grade": "السادس الإعدادي",
+        "rank": "1",
+        "average": 99.7,
+        "score": 498
+      },
+      {
+        "name": "حسام علي",
+        "grade": "السادس الإعدادي",
+        "rank": "2",
+        "average": 99,
+        "score": 495
+      },
+      {
+        "name": "باسل أحمد",
+        "grade": "السادس الإعدادي",
+        "rank": "3",
+        "average": 98.4,
+        "score": 492
+      }
+    ]
+  },
+  "regular_students": [
+    {
+      "name": "أحمد محمد علي",
+      "email": "ahmed.ali@alfarabi.edu",
+      "phone": "07801234567",
+      "grade": "الأول المتوسط"
+    },
+    {
+      "name": "عمر خالد حسن",
+      "email": "omar.khaled@alfarabi.edu",
+      "phone": "07801234568",
+      "grade": "الأول المتوسط"
+    },
+    {
+      "name": "سالم أحمد محمود",
+      "email": "salem.ahmed@alfarabi.edu",
+      "phone": "07801234569",
+      "grade": "الأول المتوسط"
+    },
+    {
+      "name": "فارس علي خالد",
+      "email": "faras.ali@alfarabi.edu",
+      "phone": "07801234570",
+      "grade": "الثاني المتوسط"
+    },
+    {
+      "name": "طارق محمد سالم",
+      "email": "tarek.mohammed@alfarabi.edu",
+      "phone": "07801234571",
+      "grade": "الثاني المتوسط"
+    },
+    {
+      "name": "ماهر حسن فارس",
+      "email": "maher.hassan@alfarabi.edu",
+      "phone": "07801234572",
+      "grade": "الثالث المتوسط"
+    },
+    {
+      "name": "ياسر علي أحمد",
+      "email": "yaser.ali@alfarabi.edu",
+      "phone": "07801234573",
+      "grade": "الرابع الإعدادي"
+    },
+    {
+      "name": "نبيل خالد عمر",
+      "email": "nabil.khaled@alfarabi.edu",
+      "phone": "07801234574",
+      "grade": "الخامس الإعدادي"
+    },
+    {
+      "name": "باسل محمد ناصر",
+      "email": "basel.mohammed@alfarabi.edu",
+      "phone": "07801234575",
+      "grade": "السادس الإعدادي"
+    },
+    {
+      "name": "حسام علي جاسم",
+      "email": "hossam.ali@alfarabi.edu",
+      "phone": "07801234576",
+      "grade": "السادس الإعدادي"
+    }
+  ],
+  "last_updated": "2026-04-03T11:38:17.232Z"
+}
