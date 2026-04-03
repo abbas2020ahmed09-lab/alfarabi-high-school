@@ -439,6 +439,7 @@ async function loadInitialData() {
     
     // Initialize data if not exists
     initializeTeachersData();
+    initializeTopStudentsData();
     initializeRegularStudents();
     
     filterGrade('1st');
@@ -462,6 +463,19 @@ function initializeTeachersData() {
     
     if (existingTeachers.length === 0) {
         localStorage.setItem('teachers_list', JSON.stringify(teachersData));
+    }
+}
+
+function initializeTopStudentsData() {
+    const existingTop = JSON.parse(localStorage.getItem('top_students_data') || 'null');
+    if (existingTop && typeof existingTop === 'object') {
+        Object.keys(topStudentsData).forEach(grade => {
+            if (Array.isArray(existingTop[grade])) {
+                topStudentsData[grade] = existingTop[grade];
+            }
+        });
+    } else {
+        localStorage.setItem('top_students_data', JSON.stringify(topStudentsData));
     }
 }
 
@@ -549,7 +563,13 @@ function viewStudentsByGrade(grade) {
     const container = document.getElementById('students-container');
     if (!container) return;
     
-    const students = generateStudentsForGrade(grade);
+    const studentsFromStorage = JSON.parse(localStorage.getItem('regular_students') || '[]');
+    const students = studentsFromStorage.filter(s => s.grade === (grade === '1st' ? 'الأول المتوسط' :
+        grade === '2nd' ? 'الثاني المتوسط' :
+        grade === '3rd' ? 'الثالث المتوسط' :
+        grade === '4th' ? 'الرابع الإعدادي' :
+        grade === '5th' ? 'الخامس الإعدادي' : 'السادس الإعدادي'));
+    
     container.innerHTML = '';
     
     students.forEach((student, index) => {
