@@ -1137,13 +1137,23 @@ function openDeveloperDashboard() {
 
 function closeAdminDashboard() {
     document.getElementById('dashboard-modal').classList.remove('active');
+    // Keep currentUser role so we don't accidentally show admin panel after close.
+    if (currentUser && currentUser.role === 'developer') {
+        // remain developer until explicit logout.
+        return;
+    }
+    // Optionally clear on logout to be fully safe.
+    currentUser = null;
 }
 
 function returnToDashboard() {
     if (currentUser && currentUser.role === 'developer') {
         openDeveloperDashboard();
-    } else {
+    } else if (currentUser && currentUser.role === 'admin') {
         openAdminDashboard();
+    } else {
+        // fallback: no active session, do nothing or ask login again
+        showNotification('يرجى تسجيل الدخول أولاً', 'info');
     }
 }
 
@@ -2401,6 +2411,7 @@ function handleDeveloperLogin(event) {
     const key = document.getElementById('developer-key').value;
     
     if (key === 'DEV_MASTER_2024') {
+        currentUser = { role: 'developer', name: 'Developer' };
         closeDeveloperModal();
         openDeveloperDashboard();
     } else {
